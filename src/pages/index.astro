@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<BaseLayout title="A宝的 Notebook · ASKB">
+  <section class="hero">
+    <h1>A宝的 Notebook</h1>
+    <p class="lede">A宝的个人博客：长文、数据分析、随笔与资源分享。</p>
+  </section>
+  <div class="post-grid">
+    {posts.map(post => <PostCard post={post} />)}
+  </div>
+</BaseLayout>

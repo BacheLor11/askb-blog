@@ -1,0 +1,12 @@
+---
+const { post } = Astro.props;
+const d = post.data.pubDate;
+const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+---
+<article class="card">
+  <a href={`/blog/${post.id}/`}>
+    <div class="meta">{dateStr}</div>
+    <h3>{post.data.title}</h3>
+    <p class="desc">{post.data.description}</p>
+  </a>
+</article>

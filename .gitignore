@@ -1,0 +1,16 @@
+# 依赖（不进仓库，部署时 CF 自动 npm install）
+node_modules/
+
+# 构建产物
+dist/
+.astro/
+
+# Obsidian 编辑器配置
+.obsidian/
+
+# 系统文件
+.DS_Store
+
+# 环境变量
+.env
+.env.production
