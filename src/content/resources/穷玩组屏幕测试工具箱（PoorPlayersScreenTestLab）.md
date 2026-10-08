@@ -7,6 +7,10 @@ iOS / iPadOS 屏幕测试工具箱，移植自安卓应用「穷玩组屏幕测�
 
 适配 iPhone 与 iPad（原生 universal），声明 `UIRequiresFullScreen`，iPad 上进入全屏测试时状态栏与 Home 指示条可完整隐藏。支持 ProMotion 120Hz 锁频。
 
+## 链接
+
+>https://github.com/BacheLor11/PoorPlayers-Screen-Test-Lab-iOS
+
 ## 功能
 
 | 工具 | 说明 |
