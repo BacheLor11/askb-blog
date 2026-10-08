@@ -12,6 +12,17 @@ const blog = defineCollection({
   }),
 });
 
+// 资源集合：自己整理的工具/资料/清单，放在 src/content/resources/ 下，同样 .md 驱动
+const resources = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/resources' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    tags: z.array(z.string()).optional(),
+  }),
+});
+
 // 关于页：单一 md 驱动，放在 src/content/about/about.md，方便在 Obsidian 里改
 const about = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/about' }),
@@ -20,4 +31,4 @@ const about = defineCollection({
   }),
 });
 
-export const collections = { blog, about };
+export const collections = { blog, about, resources };
