@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+const posts = (await getCollection('essays')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<BaseLayout title="随笔 · ASKB">
+  <section class="hero">
+    <h1>随笔</h1>
+    <p class="lede">偶尔冒出来的小想法，随手记在这里。</p>
+  </section>
+  <div class="post-grid">
+    {posts.map(post => <PostCard post={post} />)}
+  </div>
+</BaseLayout>

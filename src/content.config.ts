@@ -31,4 +31,15 @@ const about = defineCollection({
   }),
 });
 
-export const collections = { blog, about, resources };
+// 随笔集合：随手记的小想法，放在 src/content/essays/ 下，.md 驱动；标题可选（无标题时取正文首句）
+const essays = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/essays' }),
+  schema: z.object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    pubDate: z.coerce.date(),
+    tags: z.array(z.string()).optional(),
+  }),
+});
+
+export const collections = { blog, about, resources, essays };

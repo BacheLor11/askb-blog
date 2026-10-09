@@ -5,8 +5,9 @@ import PostCard from '../components/PostCard.astro';
 
 // 首页 = 所有内容（文章 + 资源）按时间线合并排序
 const blogPosts = await getCollection('blog');
+const essayPosts = await getCollection('essays');
 const resourcePosts = await getCollection('resources');
-const posts = [...blogPosts, ...resourcePosts].sort(
+const posts = [...blogPosts, ...essayPosts, ...resourcePosts].sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---

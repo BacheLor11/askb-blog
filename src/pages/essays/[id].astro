@@ -1,10 +1,17 @@
 ---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('essays');
+  return posts.map(post => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
 const { post } = Astro.props;
-// 按所属集合决定跳转前缀
-const prefix =
-  post.collection === 'resources' ? '/resources/'
-  : post.collection === 'essays' ? '/essays/'
-  : '/blog/';
+const { Content } = await render(post);
 const d = post.data.pubDate;
 const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
@@ -21,12 +28,12 @@ function firstSentence(body) {
 }
 
 const title = post.data.title || firstSentence(post.body) || dateStr;
-const desc = post.data.description || '';
+const description = post.data.description || title;
 ---
-<article class="card">
-  <a href={`${prefix}${post.id}/`}>
-    <div class="meta">{dateStr}</div>
-    <h3>{title}</h3>
-    {desc && <p class="desc">{desc}</p>}
-  </a>
-</article>
+<BaseLayout title={`${title} · askb.app`} description={description}>
+  <article class="prose">
+    <p class="meta">{dateStr}</p>
+    <h1>{title}</h1>
+    <Content />
+  </article>
+</BaseLayout>
