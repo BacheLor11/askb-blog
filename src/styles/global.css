@@ -81,7 +81,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
 .nav a { color: var(--ink-soft); }
 .nav a:hover { color: var(--accent); text-decoration: none; }
 
-/* 汉堡菜单按钮：桌面端隐藏，窄屏显示 */
+/* 汉堡菜单按钮：桌面端隐藏，窄屏显示（无外框） */
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -91,8 +91,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
   height: 40px;
   padding: 0;
   background: none;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: none;
   cursor: pointer;
 }
 .nav-toggle span {
@@ -108,7 +107,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
 .nav-toggle.active span:nth-child(2) { opacity: 0; }
 .nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* 窄屏：导航收成下拉菜单 */
+/* 窄屏：导航收成右侧收窄的下拉菜单，背景与主界面一致 */
 @media (max-width: 640px) {
   .nav-toggle { display: flex; }
   .nav {
@@ -116,11 +115,12 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
     position: absolute;
     top: 100%;
     right: 12px;
-    left: 12px;
+    left: auto;
+    width: min(240px, 72vw);
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    background: var(--surface);
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
@@ -134,7 +134,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
     border-radius: 8px;
     color: var(--ink);
   }
-  .nav a:hover { background: var(--bg); color: var(--accent); text-decoration: none; }
+  .nav a:hover { background: var(--surface); color: var(--accent); text-decoration: none; }
 }
 
 /* 首页 hero */
