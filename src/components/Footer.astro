@@ -22,5 +22,31 @@ const year = new Date().getFullYear();
       <span class="sep">｜</span>
       <a href="https://github.com/BacheLor11" target="_blank" rel="noopener">Github</a>
     </p>
+    <p class="theme-switch">
+      <button type="button" id="themeToggle">切换为深色</button>
+    </p>
   </div>
 </footer>
+<script>
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+  const themeBtn = document.getElementById('themeToggle');
+  function syncThemeLabel() {
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    themeBtn.textContent = dark ? '切换为浅色' : '切换为深色';
+  }
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+      syncThemeLabel();
+    });
+    // 系统切深/浅时强制跟随并刷新文案（手动临时切换会被覆盖回来）
+    const onSystemChange = () => {
+      document.documentElement.setAttribute('data-theme', mq.matches ? 'dark' : 'light');
+      syncThemeLabel();
+    };
+    if (mq.addEventListener) mq.addEventListener('change', onSystemChange);
+    else if (mq.addListener) mq.addListener(onSystemChange);
+    syncThemeLabel();
+  }
+</script>

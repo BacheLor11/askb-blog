@@ -112,38 +112,18 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
 
 /* 右侧操作区：桌面含导航+主题按钮；移动端含主题按钮+汉堡 */
 .header-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
+/* 底部深浅色切换：纯文字按钮，跟随系统（手动仅临时预览） */
+.theme-switch { margin-top: 0.4em; }
+.theme-switch button {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
   background: none;
   border: none;
+  padding: 0;
   cursor: pointer;
-  color: var(--ink);
-  transition: opacity 0.3s ease;
 }
-.theme-toggle svg {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  transition: transform 0.5s ease;
-}
-html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
-.theme-toggle .i-moon,
-.theme-toggle .i-sun {
-  transform-origin: 12px 12px;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-/* 浅色（默认）：月亮显示，太阳收起旋转 */
-.theme-toggle .i-sun { opacity: 0; transform: rotate(-90deg) scale(0.4); }
-.theme-toggle .i-moon { opacity: 1; transform: rotate(0) scale(1); }
-/* 深色：太阳显示，月亮收起旋转 */
-html[data-theme="dark"] .theme-toggle .i-moon { opacity: 0; transform: rotate(90deg) scale(0.4); }
-html[data-theme="dark"] .theme-toggle .i-sun { opacity: 1; transform: rotate(0) scale(1); }
-.theme-toggle:hover { opacity: 0.6; }
+.theme-switch button:hover { color: var(--accent); text-decoration: underline; }
 
 /* 汉堡菜单按钮：桌面端隐藏，窄屏显示（无外框） */
 .nav-toggle {

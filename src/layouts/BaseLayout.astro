@@ -17,9 +17,14 @@ const { title, description = 'A宝的个人博客 · askb.app' } = Astro.props;
     <script is:inline>
       (function () {
         try {
-          var t = localStorage.getItem('theme');
-          if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-          document.documentElement.setAttribute('data-theme', t);
+          var mq = window.matchMedia('(prefers-color-scheme: dark)');
+          var apply = function () {
+            document.documentElement.setAttribute('data-theme', mq.matches ? 'dark' : 'light');
+          };
+          apply();
+          // 系统深浅色变化时实时跟随（纯跟随系统，手动临时切换会被覆盖回来）
+          if (mq.addEventListener) mq.addEventListener('change', apply);
+          else if (mq.addListener) mq.addListener(apply);
         } catch (e) {}
       })();
     </script>
