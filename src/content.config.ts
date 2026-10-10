@@ -42,4 +42,15 @@ const essays = defineCollection({
   }),
 });
 
-export const collections = { blog, about, resources, essays };
+// 工具集合：常用的在线小工具，放在 src/content/tools/ 下，.md 驱动；每条直接外链到对应网页
+const tools = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/tools' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    url: z.string().url(),
+    pubDate: z.coerce.date().optional(),
+  }),
+});
+
+export const collections = { blog, about, resources, essays, tools };
