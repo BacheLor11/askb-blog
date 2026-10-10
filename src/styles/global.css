@@ -84,7 +84,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
   padding: 14px 20px;
   flex-wrap: wrap;
 }
-.brand { font-family: 'ZapfinoBrand', "Zapfino", "Apple Chancery", cursive; font-size: 1.5rem; font-weight: 400; line-height: 1; color: var(--ink); letter-spacing: 0.02em; }
+.brand { font-family: 'ZapfinoBrand', "Zapfino", "Apple Chancery", cursive; font-size: 1.2rem; font-weight: 400; line-height: 1; color: var(--ink); letter-spacing: 0.02em; transform: translateY(2px); }
 .brand:hover { text-decoration: none; color: var(--accent); }
 .nav { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.95rem; font-family: var(--font-serif); }
 .nav a { color: var(--ink-soft); }
@@ -110,7 +110,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
   margin: 0 auto;
   background: var(--ink);
   border-radius: 2px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 .nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-toggle.active span:nth-child(2) { opacity: 0; }
@@ -136,14 +136,14 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
     font-size: 1rem;
     text-align: right;        /* 字体右对齐 */
     z-index: 20;
-    /* 收起初始态 + 动画 */
+    /* 收起初始态 + 动画（与汉堡按钮统一 0.3s） */
     max-height: 0;
     overflow: hidden;
     padding: 0;
     opacity: 0;
     transform: translateY(-8px);
     pointer-events: none;
-    transition: max-height 0.32s ease, opacity 0.2s ease, transform 0.2s ease, padding 0.25s ease;
+    transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease, padding 0.3s ease;
   }
   .nav.open {
     max-height: 60vh;
@@ -153,6 +153,8 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
     pointer-events: auto;
   }
   .nav a {
+    display: block;           /* 关键：始终块级占满宽度，文字从一开始就是右对齐，不会先排一行再右移 */
+    width: 100%;
     padding: 12px 14px;
     color: var(--ink);
     text-align: right;
