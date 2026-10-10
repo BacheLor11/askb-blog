@@ -18,6 +18,8 @@
 
 :root {
   --bg: #FBFAF7;          /* 米白底 */
+  --header-bg: rgba(251, 250, 247, 0.85);
+  --code-bg: #f0ede6;
   --surface: #FFFFFF;
   --ink: #1A1A1A;         /* 墨黑字 */
   --ink-soft: #5b574e;
@@ -30,6 +32,20 @@
   /* 字体走系统字体栈，零网络请求、国内外都不依赖 Google Fonts */
   --font-serif: 'SongtiSC', "Songti SC", "STSong", "SimSun", serif;  /* 嵌入宋体优先，系统宋体兜底 */
   --font-sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}
+
+/* 深色模式：覆盖颜色变量，data-theme="dark" 时生效（跟随系统或手动切换） */
+[data-theme="dark"] {
+  --bg: #15171A;
+  --surface: #202326;
+  --ink: #ECE9E2;
+  --ink-soft: #A8A29A;
+  --accent: #7BA3CC;       /* 墨蓝提亮，深底可读 */
+  --accent-2: #D98A5E;     /* 赭石提亮 */
+  --border: #2E3236;
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --header-bg: rgba(21, 23, 26, 0.85);
+  --code-bg: #2A2E33;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -47,6 +63,7 @@ body {
   line-height: 1.8;
   -webkit-font-smoothing: antialiased;
   overflow-wrap: break-word;   /* 超长英文/网址自动断行，普通单词不受影响 */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4 {
@@ -73,7 +90,8 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
   position: sticky;
   top: 0;
   z-index: 10;
-  transition: transform 0.3s ease;
+  background: var(--header-bg);
+  transition: transform 0.5s ease, background-color 0.3s ease;
 }
 .site-header.hidden { transform: translateY(-100%); }
 .site-header .inner {
@@ -91,6 +109,25 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
 .nav { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.95rem; font-family: var(--font-serif); }
 .nav a { color: var(--ink-soft); }
 .nav a:hover { color: var(--accent); text-decoration: none; }
+
+/* 右侧操作区：桌面含导航+主题按钮；移动端含主题按钮+汉堡 */
+.header-actions { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--ink);
+  transition: transform 0.5s ease, color 0.3s ease;
+}
+.theme-toggle:hover { color: var(--accent); transform: rotate(18deg); }
 
 /* 汉堡菜单按钮：桌面端隐藏，窄屏显示（无外框） */
 .nav-toggle {
@@ -112,7 +149,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
   margin: 0 auto;
   background: var(--ink);
   border-radius: 2px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 .nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
 .nav-toggle.active span:nth-child(2) { opacity: 0; }
@@ -145,7 +182,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
     opacity: 0;
     transform: translateY(-8px);
     pointer-events: none;
-    transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease, padding 0.3s ease;
+    transition: max-height 0.5s ease, opacity 0.5s ease, transform 0.5s ease, padding 0.5s ease, background-color 0.3s ease;
   }
   .nav.open {
     max-height: 60vh;
@@ -228,7 +265,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
   border-radius: 0 var(--radius) var(--radius) 0;
 }
 .prose pre { background: #1e1e1e; color: #f4f4f4; padding: 18px; border-radius: var(--radius); overflow: auto; font-size: 0.9rem; line-height: 1.6; }
-.prose code { font-family: "SF Mono", Menlo, Consolas, monospace; background: #f0ede6; padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.88em; }
+.prose code { font-family: "SF Mono", Menlo, Consolas, monospace; background: var(--code-bg); padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.88em; }
 .prose pre code { background: none; padding: 0; }
 .prose table { border-collapse: collapse; width: 100%; margin: 1.4em 0; font-size: 0.95rem; display: block; overflow-x: auto; }
 .prose th, .prose td { border: 1px solid var(--border); padding: 10px 12px; text-align: left; overflow-wrap: break-word; }

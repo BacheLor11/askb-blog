@@ -12,12 +12,15 @@ const nav = [
 <header class="site-header">
   <div class="inner">
     <a class="brand" href="/">ASKB</a>
-    <button class="nav-toggle" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-nav">
-      <span></span><span></span><span></span>
-    </button>
-    <nav class="nav" id="primary-nav">
-      {nav.map(item => <a href={item.href}>{item.label}</a>)}
-    </nav>
+    <div class="header-actions">
+      <nav class="nav" id="primary-nav">
+        {nav.map(item => <a href={item.href}>{item.label}</a>)}
+      </nav>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换深色模式" title="切换深色模式">🌙</button>
+      <button class="nav-toggle" aria-label="打开菜单" aria-expanded="false" aria-controls="primary-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -68,5 +71,24 @@ const nav = [
       }
       lastScrollY = y;
     }, { passive: true });
+  }
+
+  // 深色模式切换：跟随系统或手动，偏好存入 localStorage
+  const themeToggle = document.getElementById('themeToggle');
+  function syncThemeIcon() {
+    if (!themeToggle) return;
+    const t = document.documentElement.getAttribute('data-theme');
+    themeToggle.textContent = t === 'dark' ? '☀️' : '🌙';
+  }
+  syncThemeIcon();
+  if (themeToggle) {
+    themeToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (err) {}
+      syncThemeIcon();
+    });
   }
 </script>
