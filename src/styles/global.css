@@ -123,17 +123,27 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
   border: none;
   cursor: pointer;
   color: var(--ink);
-  transition: color 0.3s ease;
+  transition: opacity 0.3s ease;
 }
 .theme-toggle svg {
   width: 20px;
   height: 20px;
   stroke: currentColor;
+  transition: transform 0.5s ease;
 }
-.theme-toggle .icon-sun { display: none; }
-html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
-html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
-.theme-toggle:hover { color: var(--accent); }
+html[data-theme="dark"] .theme-toggle svg { transform: rotate(180deg); }
+.theme-toggle .i-moon,
+.theme-toggle .i-sun {
+  transform-origin: 12px 12px;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+/* 浅色（默认）：月亮显示，太阳收起旋转 */
+.theme-toggle .i-sun { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+.theme-toggle .i-moon { opacity: 1; transform: rotate(0) scale(1); }
+/* 深色：太阳显示，月亮收起旋转 */
+html[data-theme="dark"] .theme-toggle .i-moon { opacity: 0; transform: rotate(90deg) scale(0.4); }
+html[data-theme="dark"] .theme-toggle .i-sun { opacity: 1; transform: rotate(0) scale(1); }
+.theme-toggle:hover { opacity: 0.6; }
 
 /* 汉堡菜单按钮：桌面端隐藏，窄屏显示（无外框） */
 .nav-toggle {
