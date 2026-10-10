@@ -7,6 +7,15 @@
   font-display: swap;
 }
 
+/* 自托管「Zapfino」仅封装站点 logo 的 ASKB 四字母，体积极小，用于左上角站名 */
+@font-face {
+  font-family: 'ZapfinoBrand';
+  src: url('/fonts/zapfino-askb.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #FBFAF7;          /* 米白底 */
   --surface: #FFFFFF;
@@ -75,7 +84,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
   padding: 14px 20px;
   flex-wrap: wrap;
 }
-.brand { font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--ink); }
+.brand { font-family: 'ZapfinoBrand', "Zapfino", "Apple Chancery", cursive; font-size: 1.5rem; font-weight: 400; line-height: 1; color: var(--ink); letter-spacing: 0.02em; }
 .brand:hover { text-decoration: none; color: var(--accent); }
 .nav { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.95rem; font-family: var(--font-serif); }
 .nav a { color: var(--ink-soft); }
@@ -107,32 +116,46 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
 .nav-toggle.active span:nth-child(2) { opacity: 0; }
 .nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* 窄屏：导航收成右侧收窄的下拉菜单，背景与主界面一致 */
+/* 窄屏：导航收成通栏铺满的下拉菜单，字体右对齐、直角无圆角、带展开/收起动画 */
 @media (max-width: 640px) {
   .nav-toggle { display: flex; }
   .nav {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 12px;
-    left: auto;
-    width: min(240px, 72vw);
+    display: flex;            /* 保持 flex 以便做高度过渡动画 */
     flex-direction: column;
     align-items: stretch;
     gap: 0;
+    position: absolute;
+    top: 100%;
+    left: 12px;
+    right: 12px;
+    width: auto;
     background: var(--bg);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
+    border-radius: 0;         /* 不要圆角 */
     box-shadow: var(--shadow);
-    padding: 6px;
     font-size: 1rem;
+    text-align: right;        /* 字体右对齐 */
     z-index: 20;
+    /* 收起初始态 + 动画 */
+    max-height: 0;
+    overflow: hidden;
+    padding: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: max-height 0.32s ease, opacity 0.2s ease, transform 0.2s ease, padding 0.25s ease;
   }
-  .nav.open { display: flex; }
+  .nav.open {
+    max-height: 60vh;
+    padding: 6px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
   .nav a {
     padding: 12px 14px;
-    border-radius: 8px;
     color: var(--ink);
+    text-align: right;
   }
   .nav a:hover { background: var(--surface); color: var(--accent); text-decoration: none; }
 }
