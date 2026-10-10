@@ -81,6 +81,62 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
 .nav a { color: var(--ink-soft); }
 .nav a:hover { color: var(--accent); text-decoration: none; }
 
+/* 汉堡菜单按钮：桌面端隐藏，窄屏显示 */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.nav-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  margin: 0 auto;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.active span:nth-child(2) { opacity: 0; }
+.nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* 窄屏：导航收成下拉菜单 */
+@media (max-width: 640px) {
+  .nav-toggle { display: flex; }
+  .nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 12px;
+    left: 12px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 6px;
+    font-size: 1rem;
+    z-index: 20;
+  }
+  .nav.open { display: flex; }
+  .nav a {
+    padding: 12px 14px;
+    border-radius: 8px;
+    color: var(--ink);
+  }
+  .nav a:hover { background: var(--bg); color: var(--accent); text-decoration: none; }
+}
+
 /* 首页 hero */
 .hero { margin: 8px 0 36px; }
 .hero h1 { font-size: clamp(2rem, 5vw, 2.8rem); margin: 0 0 0.3em; }
