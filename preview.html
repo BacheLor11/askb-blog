@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ASKB · 预览</title>
+  <style>
+    :root {
+      --bg: #FBFAF7;
+      --ink: #1A1A1A;
+      --soft: #777;
+      --line: #e3ddd4;
+      --accent: #34557A;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: Georgia, "Songti SC", "Noto Serif SC", serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--line);
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 53px;
+      background: var(--bg);
+    }
+    .brand {
+      font-family: "Zapfino", "Apple Chancery", cursive;
+      font-size: 1.4rem;
+      color: var(--ink);
+    }
+    .topbar a.btn {
+      font-size: 0.9rem;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+    .topbar a.btn:hover { background: #fff; }
+    .frame-wrap {
+      position: absolute;
+      top: 53px; left: 0; right: 0; bottom: 0;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #fff;
+    }
+    .fallback {
+      position: absolute;
+      inset: 53px 0 0 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      text-align: center;
+      padding: 24px;
+    }
+    .fallback.show { display: flex; }
+    .fallback a {
+      color: var(--accent);
+      font-size: 1.1rem;
+      text-decoration: none;
+    }
+    .hint {
+      font-size: 0.82rem;
+      color: var(--soft);
+      margin-top: 6px;
+      line-height: 1.7;
+    }
+    code {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="brand">ASKB</span>
+    <a class="btn" href="https://askb.app" target="_blank" rel="noopener">在新标签打开 ↗</a>
+  </div>
+
+  <div class="frame-wrap">
+    <iframe id="pv" src="https://askb.app" title="askb.app 实时预览"></iframe>
+  </div>
+
+  <div class="fallback" id="fb">
+    <div>预览框被浏览器安全策略拦截（该站点不允许被嵌入 iframe）。</div>
+    <a href="https://askb.app" target="_blank" rel="noopener">点此在新标签打开 askb.app ↗</a>
+    <div class="hint">
+      本地预览：终端进入项目目录执行 <code>npm run dev</code>，<br />
+      再打开 <code>http://localhost:4321</code> 即可看本地效果。
+    </div>
+  </div>
+
+  <script>
+    var pv = document.getElementById('pv');
+    var fb = document.getElementById('fb');
+    var loaded = false;
+    pv.addEventListener('load', function () { loaded = true; });
+    pv.addEventListener('error', function () { fb.classList.add('show'); });
+    setTimeout(function () { if (!loaded) { fb.classList.add('show'); } }, 4000);
+  </script>
+</body>
+</html>
