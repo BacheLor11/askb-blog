@@ -73,7 +73,9 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
   position: sticky;
   top: 0;
   z-index: 10;
+  transition: transform 0.3s ease;
 }
+.site-header.hidden { transform: translateY(-100%); }
 .site-header .inner {
   max-width: 960px;
   margin: 0 auto;
@@ -155,7 +157,7 @@ main.container { padding-top: 40px; padding-bottom: 56px; }
   .nav a {
     display: block;           /* 关键：始终块级占满宽度，文字从一开始就是右对齐，不会先排一行再右移 */
     width: 100%;
-    padding: 12px 14px;
+    padding: 12px 22px;
     color: var(--ink);
     text-align: right;
   }

@@ -24,19 +24,49 @@ const nav = [
 <script>
   const toggle = document.querySelector('.nav-toggle');
   const navEl = document.querySelector('.nav');
+  const header = document.querySelector('.site-header');
+  let lastScrollY = window.scrollY;
+
+  function closeMenu() {
+    if (!navEl) return;
+    navEl.classList.remove('open');
+    if (toggle) {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.classList.remove('active');
+    }
+  }
+
   if (toggle && navEl) {
-    toggle.addEventListener('click', () => {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
       const open = navEl.classList.toggle('open');
       toggle.setAttribute('aria-expanded', String(open));
       toggle.classList.toggle('active', open);
     });
     // 点任意导航项后自动收起菜单
     navEl.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        navEl.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
-        toggle.classList.remove('active');
-      });
+      link.addEventListener('click', closeMenu);
     });
+    // 点击菜单栏以外的区域自动收起
+    document.addEventListener('click', (e) => {
+      if (!navEl.classList.contains('open')) return;
+      if (navEl.contains(e.target) || toggle.contains(e.target)) return;
+      closeMenu();
+    });
+    // 滚动时：菜单展开则收起；移动端导航栏自动隐藏/展示
+    window.addEventListener('scroll', () => {
+      if (navEl.classList.contains('open')) {
+        closeMenu();
+        return;
+      }
+      if (window.innerWidth > 640) return;
+      const y = window.scrollY;
+      if (y > lastScrollY && y > 80) {
+        header.classList.add('hidden');
+      } else {
+        header.classList.remove('hidden');
+      }
+      lastScrollY = y;
+    }, { passive: true });
   }
 </script>
