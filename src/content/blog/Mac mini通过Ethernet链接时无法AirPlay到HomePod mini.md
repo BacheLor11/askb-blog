@@ -3,7 +3,7 @@ title: Mac mini通过Ethernet链接时无法AirPlay到HomePod mini
 description: Mac mini通过Ethernet链接时无法AirPlay到HomePod mini
 pubDate: 2026-10-12T09:00:00
 ---
-最近我的M6 Mac mini到货了，但是发现如果无法AirPlay到我的HomePod mini上。
+最近我的M6 Mac mini到货了，但是发现无法AirPlay到我的HomePod mini上。
 
 系统版本macOS27.0.1
 ## 具体表现为
@@ -21,7 +21,7 @@ pubDate: 2026-10-12T09:00:00
 
 均为相同案例。
 
-![截屏2026-10-12 10.53.16](/images/airplay-01.png) ![截屏2026-10-12 10.53.27](/images/airplay-02.png) ![截屏2026-10-12 10.54.03](/images/airplay-03.png) ![截屏2026-10-12 10.54.07 1](/images/airplay-04.png) ![截屏2026-10-12 11.01.00 1](/images/airplay-06.png)
+![截屏2026-10-12 10.53.16](airplay-01.png) ![截屏2026-10-12 10.53.27](airplay-02.png) ![截屏2026-10-12 10.54.03](airplay-03.png) ![截屏2026-10-12 10.54.07 1](airplay-04.png) ![截屏2026-10-12 11.01.00 1](airplay-06.png)
 
 4年都没解决吗，Apple！
 
