@@ -48,7 +48,7 @@ const tools = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
-    url: z.string().url(),
+    url: z.string().url().or(z.string().startsWith('/')),
     pubDate: z.coerce.date().optional(),
   }),
 });
