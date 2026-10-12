@@ -21,7 +21,7 @@ pubDate: 2026-10-12T09:00:00
 
 均为相同案例。
 
-![截屏2026-10-12 10.53.16](airplay-01.png) ![截屏2026-10-12 10.53.27](airplay-02.png) ![截屏2026-10-12 10.54.03](airplay-03.png) ![截屏2026-10-12 10.54.07 1](airplay-04.png) ![截屏2026-10-12 11.01.00 1](airplay-06.png)
+![截屏2026-10-12 10.53.16](../media/mac-mini-airplay/airplay-01.png) ![截屏2026-10-12 10.53.27](../media/mac-mini-airplay/airplay-02.png) ![截屏2026-10-12 10.54.03](../media/mac-mini-airplay/airplay-03.png) ![截屏2026-10-12 10.54.07 1](../media/mac-mini-airplay/airplay-04.png) ![截屏2026-10-12 11.01.00 1](../media/mac-mini-airplay/airplay-06.png)
 
 4年都没解决吗，Apple！
 
