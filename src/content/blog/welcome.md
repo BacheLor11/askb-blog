@@ -2,6 +2,7 @@
 title: "欢迎来到 askb.app"
 description: "这里是 A宝 的个人博客，收我的知乎长文、数据分析与一些随笔。"
 pubDate: 2026-10-08T09:00:00
+slug: welcome
 ---
 ## 你好，我是知乎@昂首阔步。
 

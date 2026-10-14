@@ -24,7 +24,7 @@ const title = post.data.title || firstSentence(post.body) || dateStr;
 const desc = post.data.description || '';
 ---
 <article class="card">
-  <a href={`${prefix}${post.id}/`}>
+  <a href={`${prefix}${post.slug}/`}>
     <div class="meta">{dateStr}</div>
     <h3>{title}</h3>
     {desc && <p class="desc">{desc}</p>}
