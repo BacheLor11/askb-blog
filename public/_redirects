@@ -1,0 +1,6 @@
+# 旧中文 URL → 新英文 slug（301 永久重定向，避免缓存过期后 404 + 重复内容）
+/blog/Mac mini通过Ethernet链接时无法AirPlay到HomePod mini/ /blog/mac-mini-ethernet-airplay-homepod-mini/ 301
+/essays/关于语音助手的人机交互/ /essays/voice-assistant-human-interaction/ 301
+/essays/开栏小记/ /essays/opening-note/ 301
+/resources/穷玩组屏幕测试工具箱/ /resources/poor-players-screen-test-toolbox/ 301
+/resources/飞书共享表格/ /resources/feishu-shared-spreadsheet/ 301
