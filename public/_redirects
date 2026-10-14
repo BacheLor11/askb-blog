@@ -1,6 +1,13 @@
-# 旧中文 URL → 新英文 slug（301 永久重定向，避免缓存过期后 404 + 重复内容）
+# 旧中文/混合 URL → 新英文 slug（301 永久重定向）
 /blog/Mac mini通过Ethernet链接时无法AirPlay到HomePod mini/ /blog/mac-mini-ethernet-airplay-homepod-mini/ 301
+/blog/Mac%20mini%E9%80%9A%E8%BF%87Ethernet%E9%93%BE%E6%8E%A5%E6%97%B6%E6%97%A0%E6%B3%95AirPlay%E5%88%B0HomePod%20mini/ /blog/mac-mini-ethernet-airplay-homepod-mini/ 301
+/blog/mac-mini通过ethernet链接时无法airplay到homepod-mini/ /blog/mac-mini-ethernet-airplay-homepod-mini/ 301
+/blog/mac-mini%E9%80%9A%E8%BF%87ethernet%E9%93%BE%E6%8E%A5%E6%97%B6%E6%97%A0%E6%B3%95airplay%E5%88%B0homepod-mini/ /blog/mac-mini-ethernet-airplay-homepod-mini/ 301
 /essays/关于语音助手的人机交互/ /essays/voice-assistant-human-interaction/ 301
+/essays/%E5%85%B3%E4%BA%8E%E8%AF%AD%E9%9F%B3%E5%8A%A9%E6%89%8B%E7%9A%84%E4%BA%BA%E6%9C%BA%E4%BA%A4%E4%BA%92/ /essays/voice-assistant-human-interaction/ 301
 /essays/开栏小记/ /essays/opening-note/ 301
+/essays/%E5%BC%80%E6%A0%8F%E5%B0%8F%E8%AE%B0/ /essays/opening-note/ 301
 /resources/穷玩组屏幕测试工具箱/ /resources/poor-players-screen-test-toolbox/ 301
+/resources/%E7%A9%B7%E7%8E%A9%E7%BB%84%E5%B1%8F%E5%B9%95%E6%B5%8B%E8%AF%95%E5%B7%A5%E5%85%B7%E7%AE%B1/ /resources/poor-players-screen-test-toolbox/ 301
 /resources/飞书共享表格/ /resources/feishu-shared-spreadsheet/ 301
+/resources/%E9%A3%9E%E4%B9%A6%E5%85%B1%E4%BA%AB%E8%A1%A8%E6%A0%BC/ /resources/feishu-shared-spreadsheet/ 301

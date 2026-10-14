@@ -8,6 +8,7 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
+    slug: z.string().optional(),
     tags: z.array(z.string()).optional(),
   }),
 });
@@ -19,6 +20,7 @@ const resources = defineCollection({
     title: z.string(),
     description: z.string(),
     pubDate: z.coerce.date(),
+    slug: z.string().optional(),
     tags: z.array(z.string()).optional(),
   }),
 });
@@ -38,6 +40,7 @@ const essays = defineCollection({
     title: z.string().optional(),
     description: z.string().optional(),
     pubDate: z.coerce.date(),
+    slug: z.string().optional(),
     tags: z.array(z.string()).optional(),
   }),
 });
