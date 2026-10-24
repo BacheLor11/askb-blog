@@ -1,0 +1,187 @@
+---
+import { render } from 'astro:content';
+
+const { entry, months = [], current } = Astro.props;
+const { Content } = await render(entry);
+
+const title = entry.data.title || `大肥鱼带你刷知乎 · ${entry.data.month}`;
+const count = entry.data.count;
+const updated = entry.data.updated;
+
+// 从正文里抓「## YYYY-MM-DD」日期段落，生成日期跳转条
+const dates = (entry.body || '')
+  .split('\n')
+  .map((l) => l.trim())
+  .filter((l) => /^##\s+\d{4}-\d{2}-\d{2}$/.test(l))
+  .map((l) => l.replace(/^##\s+/, ''));
+
+const wdCN = ['日', '一', '二', '三', '四', '五', '六'];
+function labelOf(d) {
+  const parts = d.split('-');
+  const mo = Number(parts[1]);
+  const da = parts[2];
+  let wd = '';
+  try {
+    wd = '周' + wdCN[new Date(d + 'T00:00:00Z').getUTCDay()];
+  } catch (e) {}
+  return `${mo}.${da}${wd ? ' ' + wd : ''}`;
+}
+function monthLabel(m) {
+  const p = m.split('-');
+  return `${p[0]}年${Number(p[1])}月`;
+}
+
+const sorted = [...months].sort((a, b) => b.month.localeCompare(a.month));
+const isLatest = sorted.length > 0 && sorted[0].month === current;
+const others = sorted.filter((m) => m.month !== current);
+---
+<article class="zhihu">
+  <header class="zh-head">
+    <p class="kicker">大肥鱼带你刷知乎</p>
+    <h1>{title}</h1>
+    <p class="sub">
+      {count ? <span>本月共 <strong>{count}</strong> 条</span> : null}
+      {updated ? <span> · 更新于 {updated}</span> : null}
+      {!isLatest ? <span> · <a href="/resources/zhihu/">← 返回最新</a></span> : null}
+    </p>
+  </header>
+
+  {dates.length > 1 && (
+    <nav class="date-nav" aria-label="按日期跳转">
+      <span class="dn-label">跳到</span>
+      {dates.map((d) => <a href={`#${d}`} class="chip">{labelOf(d)}</a>)}
+    </nav>
+  )}
+
+  <div class="prose zh-body">
+    <Content />
+  </div>
+
+  <section class="archive">
+    <details>
+      <summary>
+        <span class="arc-title">已归档 · 往期推荐</span>
+        {others.length > 0 && <span class="arc-count">{others.length}</span>}
+      </summary>
+      <ul class="arc-list">
+        {!isLatest && <li><a href="/resources/zhihu/">最新一期</a></li>}
+        {others.length > 0 ? (
+          others.map((m) => (
+            <li><a href={`/resources/zhihu/${m.month}/`}>{monthLabel(m.month)}</a></li>
+          ))
+        ) : (
+          <li class="arc-empty">还没有往期，下个月再来看看～</li>
+        )}
+      </ul>
+    </details>
+  </section>
+</article>
+
+<style>
+  .zhihu { max-width: var(--maxw); }
+  .zh-head { margin: 4px 0 22px; }
+  .zh-head .kicker {
+    font-family: var(--font-serif);
+    font-size: 0.85rem;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin: 0 0 0.35em;
+  }
+  .zh-head h1 {
+    font-size: clamp(1.9rem, 4.6vw, 2.5rem);
+    margin: 0 0 0.3em;
+  }
+  .zh-head .sub { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
+  .zh-head .sub strong { color: var(--accent); }
+
+  /* 日期跳转条 */
+  .date-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0;
+    margin: 0 0 8px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .dn-label {
+    font-family: var(--font-serif);
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    margin-right: 2px;
+  }
+  .chip {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    font-family: var(--font-serif);
+    color: var(--ink-soft);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    line-height: 1.5;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  }
+  .chip:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* 已归档按钮（details/summary） */
+  .archive { margin: 40px 0 8px; border-top: 1px solid var(--border); padding-top: 24px; }
+  .archive details { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
+  .archive summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    list-style: none;
+    padding: 14px 18px;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--ink);
+    user-select: none;
+  }
+  .archive summary::-webkit-details-marker { display: none; }
+  .archive summary::before {
+    content: "▸";
+    color: var(--accent);
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+  }
+  .archive details[open] summary::before { transform: rotate(90deg); }
+  .archive summary:hover { color: var(--accent); }
+  .arc-count {
+    margin-left: auto;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 1px 9px;
+  }
+  .arc-list {
+    list-style: none;
+    margin: 0;
+    padding: 4px 18px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .arc-list li { margin: 0; }
+  .arc-list a {
+    display: inline-block;
+    padding: 5px 14px;
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--bg);
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  .arc-list a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+  .arc-empty { color: var(--ink-soft); font-size: 0.88rem; padding: 4px 0; }
+</style>

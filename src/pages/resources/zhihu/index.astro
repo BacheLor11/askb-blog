@@ -1,0 +1,23 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ZhihuMonth from '../../../components/ZhihuMonth.astro';
+
+const entries = await getCollection('zhihu');
+entries.sort((a, b) => b.data.month.localeCompare(a.data.month));
+const months = entries.map((e) => ({ month: e.data.month, title: e.data.title }));
+const latest = entries[0];
+---
+<BaseLayout
+  title={latest ? `${latest.data.title} · ASKB` : '大肥鱼带你刷知乎 · ASKB'}
+  description="大肥鱼带你刷知乎：让 AI 自己去刷知乎，把好玩、值得看的内容挑出来，按月归档。"
+>
+  {latest ? (
+    <ZhihuMonth entry={latest} months={months} current={latest.data.month} />
+  ) : (
+    <section class="hero">
+      <h1>大肥鱼带你刷知乎</h1>
+      <p class="lede">还没有内容，等大肥鱼下个月刷完知乎再来～</p>
+    </section>
+  )}
+</BaseLayout>

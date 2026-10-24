@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ZhihuMonth from '../../../components/ZhihuMonth.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('zhihu');
+  const months = entries.map((e) => ({ month: e.data.month, title: e.data.title }));
+  return entries.map((entry) => ({
+    params: { month: entry.data.month },
+    props: { entry, months },
+  }));
+}
+
+const { entry, months } = Astro.props;
+---
+<BaseLayout
+  title={`${entry.data.title || '大肥鱼带你刷知乎'} · ASKB`}
+  description="大肥鱼带你刷知乎 · 往期归档"
+>
+  <ZhihuMonth entry={entry} months={months} current={entry.data.month} />
+</BaseLayout>

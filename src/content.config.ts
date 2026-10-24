@@ -56,4 +56,15 @@ const tools = defineCollection({
   }),
 });
 
-export const collections = { blog, about, resources, essays, tools };
+// 「大肥鱼带你刷知乎」月报集合：每个月一份 md，放在 src/content/zhihu/ 下（由 scripts/sync-zhihu.mjs 同步）
+const zhihu = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/zhihu' }),
+  schema: z.object({
+    month: z.string(),            // "2026-10"
+    title: z.string().optional(),
+    count: z.coerce.number().optional(),
+    updated: z.string().optional(),
+  }),
+});
+
+export const collections = { blog, about, resources, essays, tools, zhihu };
