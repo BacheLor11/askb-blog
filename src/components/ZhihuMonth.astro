@@ -42,14 +42,14 @@ const others = sorted.filter((m) => m.month !== current);
     <p class="sub">
       {count ? <span>本月共 <strong>{count}</strong> 条</span> : null}
       {updated ? <span> · 更新于 {updated}</span> : null}
-      {!isLatest ? <span> · <a href="/resources/zhihu/">← 返回最新</a></span> : null}
+      {!isLatest ? <span> · <a href="/resources/zhihu-daily-picks/">← 返回最新</a></span> : null}
     </p>
   </header>
 
   {dates.length > 0 && (
     <nav class="date-nav" aria-label="按日期跳转">
       <span class="dn-label">跳到</span>
-      {dates.map((d) => <a href={`#${d}`} class="chip">{labelOf(d)}</a>)}
+      {dates.map((d) => <button type="button" class="chip" data-jump={d}>{labelOf(d)}</button>)}
     </nav>
   )}
 
@@ -64,10 +64,10 @@ const others = sorted.filter((m) => m.month !== current);
         {others.length > 0 && <span class="arc-count">{others.length}</span>}
       </summary>
       <ul class="arc-list">
-        {!isLatest && <li><a href="/resources/zhihu/">最新一期</a></li>}
+        {!isLatest && <li><a href="/resources/zhihu-daily-picks/">最新一期</a></li>}
         {others.length > 0 ? (
           others.map((m) => (
-            <li><a href={`/resources/zhihu/${m.month}/`}>{monthLabel(m.month)}</a></li>
+            <li><a href={`/resources/zhihu-daily-picks/${m.month}/`}>{monthLabel(m.month)}</a></li>
           ))
         ) : (
           <li class="arc-empty">还没有往期，下个月再来看看～</li>
@@ -76,6 +76,18 @@ const others = sorted.filter((m) => m.month !== current);
     </details>
   </section>
 </article>
+
+<script>
+  // 日期跳转：只滚动，不改 URL（避免地址栏出现 #2026-10-24 这类锚点）
+  document.querySelectorAll('[data-jump]').forEach((el) => {
+    el.addEventListener('click', () => {
+      const id = el.getAttribute('data-jump');
+      const target = id ? document.getElementById(id) : null;
+      if (!target) return;
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
 
 <style>
   .zhihu { max-width: var(--maxw); }
@@ -122,6 +134,9 @@ const others = sorted.filter((m) => m.month !== current);
     border: 1px solid var(--border);
     border-radius: 999px;
     line-height: 1.5;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
     transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
   }
   .chip:hover {
