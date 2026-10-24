@@ -46,7 +46,7 @@ const others = sorted.filter((m) => m.month !== current);
     </p>
   </header>
 
-  {dates.length > 1 && (
+  {dates.length > 0 && (
     <nav class="date-nav" aria-label="按日期跳转">
       <span class="dn-label">跳到</span>
       {dates.map((d) => <a href={`#${d}`} class="chip">{labelOf(d)}</a>)}
