@@ -47,10 +47,15 @@ const others = sorted.filter((m) => m.month !== current);
   </header>
 
   {dates.length > 0 && (
-    <nav class="date-nav" aria-label="按日期跳转">
-      <span class="dn-label">跳到</span>
-      {dates.map((d) => <button type="button" class="chip" data-jump={d}>{labelOf(d)}</button>)}
-    </nav>
+    <details class="date-nav" open={dates.length <= 3}>
+      <summary>
+        <span class="dn-label">跳到某天</span>
+        <span class="dn-hint">共 {dates.length} 天 · 最新 {labelOf(dates[0])}</span>
+      </summary>
+      <div class="dn-chips">
+        {dates.map((d) => <button type="button" class="chip" data-jump={d}>{labelOf(d)}</button>)}
+      </div>
+    </details>
   )}
 
   <div class="prose zh-body">
@@ -85,6 +90,8 @@ const others = sorted.filter((m) => m.month !== current);
       const target = id ? document.getElementById(id) : null;
       if (!target) return;
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // 跳完自动收起，别让日期格子挡在正文前面
+      el.closest('details')?.removeAttribute('open');
     });
   });
 </script>
@@ -107,22 +114,51 @@ const others = sorted.filter((m) => m.month !== current);
   .zh-head .sub { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
   .zh-head .sub strong { color: var(--accent); }
 
-  /* 日期跳转条 */
+  /* 日期跳转（默认折叠，点开才是完整日期格子） */
   .date-nav {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 0;
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
   }
-  .dn-label {
+  .date-nav > summary {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 11px 2px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
     font-family: var(--font-serif);
-    font-size: 0.82rem;
+  }
+  .date-nav > summary::-webkit-details-marker { display: none; }
+  .date-nav > summary::after {
+    content: "▾";
+    margin-left: auto;
+    align-self: center;
+    font-size: 0.72rem;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+  }
+  .date-nav[open] > summary::after { transform: rotate(180deg); }
+  .date-nav > summary:hover .dn-label { color: var(--accent); }
+  .dn-label {
+    font-size: 0.9rem;
+    color: var(--ink);
+    transition: color 0.15s ease;
+  }
+  .dn-hint {
+    font-size: 0.8rem;
     color: var(--ink-soft);
-    margin-right: 2px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dn-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 2px 0 14px;
   }
   .chip {
     display: inline-block;
