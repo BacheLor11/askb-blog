@@ -89,9 +89,10 @@ const others = sorted.filter((m) => m.month !== current);
       const id = el.getAttribute('data-jump');
       const target = id ? document.getElementById(id) : null;
       if (!target) return;
+      // 先收起日期格子再滚：否则收起会让上方高度变矮，落点被带偏
+      const box = el.closest('details');
+      if (box) box.open = false;
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      // 跳完自动收起，别让日期格子挡在正文前面
-      el.closest('details')?.removeAttribute('open');
     });
   });
 </script>
