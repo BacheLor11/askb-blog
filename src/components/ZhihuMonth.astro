@@ -105,6 +105,20 @@ const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
     });
   });
 
+  // 记住月历的展开状态：切月份是整页跳转，靠 sessionStorage 才不会自己收起来
+  const calWrap = document.querySelector('.cal-wrap');
+  if (calWrap) {
+    const KEY = 'zhihu-cal-open';
+    try {
+      if (sessionStorage.getItem(KEY) === '1') calWrap.open = true;
+      calWrap.addEventListener('toggle', () => {
+        sessionStorage.setItem(KEY, calWrap.open ? '1' : '0');
+      });
+    } catch (e) {
+      /* 无痕模式等场景下 sessionStorage 可能不可用，忽略即可 */
+    }
+  }
+
   // 把「今天」在月历里圈出来（构建时是静态页面，所以放到浏览器端判断）
   const pad = (n) => String(n).padStart(2, '0');
   const now = new Date();
