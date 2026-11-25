@@ -85,6 +85,13 @@ const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
         </div>
       </nav>
     </details>
+    <!-- 内联执行：解析到这里就恢复展开状态，避免加载脚本前先闪一下折叠态 -->
+    <script is:inline>
+      try {
+        var _cw = document.querySelector('.cal-wrap');
+        if (_cw && sessionStorage.getItem('zhihu-cal-open') === '1') _cw.open = true;
+      } catch (e) {}
+    </script>
   )}
 
   <div class="prose zh-body">
