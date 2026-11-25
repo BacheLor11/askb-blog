@@ -239,7 +239,8 @@ const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
 
   /* 桌面 / 平板：格子放大一档，整行铺满内容栏，看着不空也不挤 */
   @media (min-width: 640px) {
-    .cal-cell { max-width: 62px; height: 44px; font-size: 0.95rem; }
+    .cal-head { justify-content: center; gap: 18px; }
+    .cal-cell { max-width: 66px; height: 46px; font-size: 0.98rem; }
     .cal-week span { font-size: 0.8rem; padding-bottom: 8px; }
     .cal-week, .cal-grid { gap: 4px 6px; }
   }
