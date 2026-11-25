@@ -23,7 +23,6 @@ function monthLabel(m) {
 
 const sorted = [...months].sort((a, b) => b.month.localeCompare(a.month));
 const isLatest = sorted.length > 0 && sorted[0].month === current;
-const others = sorted.filter((m) => m.month !== current);
 
 // —— 月历：当月天数、1 号是周几、有内容的日期集合、前后月（只在已有月份的范围内切换）
 const [cy, cm] = current.split('-').map(Number);
@@ -51,58 +50,46 @@ const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
   </header>
 
   {dates.length > 0 && (
-    <nav class="cal" aria-label="按日期跳转">
-      <div class="cal-head">
-        {olderMonth ? (
-          <a class="cal-nav" href={`/resources/zhihu-daily-picks/${olderMonth}/`} aria-label={`上一个月 ${monthLabel(olderMonth)}`}>‹</a>
-        ) : (
-          <span class="cal-nav is-off" aria-hidden="true">‹</span>
-        )}
-        <span class="cal-title">{cy} 年 {cm} 月</span>
-        {newerMonth ? (
-          <a class="cal-nav" href={`/resources/zhihu-daily-picks/${newerMonth}/`} aria-label={`下一个月 ${monthLabel(newerMonth)}`}>›</a>
-        ) : (
-          <span class="cal-nav is-off" aria-hidden="true">›</span>
-        )}
-      </div>
-      <div class="cal-week">
-        {wdCN.map((w) => <span>{w}</span>)}
-      </div>
-      <div class="cal-grid">
-        {Array.from({ length: firstWeekday }, () => <span class="cal-cell is-blank" aria-hidden="true" />)}
-        {calendarDays.map((d) =>
-          d.has ? (
-            <button type="button" class="cal-cell is-on" data-jump={d.date} data-day={d.date} aria-label={`跳到 ${d.date}`}>{d.day}</button>
+    <details class="cal-wrap">
+      <summary class="cal-summary">
+        <span class="cal-summary-label">日期导航</span>
+        <span class="cal-summary-hint">{cy} 年 {cm} 月 · {dates.length} 天有更新</span>
+        <span class="cal-caret" aria-hidden="true">▾</span>
+      </summary>
+      <nav class="cal" aria-label="按日期跳转">
+        <div class="cal-head">
+          {olderMonth ? (
+            <a class="cal-nav" href={`/resources/zhihu-daily-picks/${olderMonth}/`} aria-label={`上一个月 ${monthLabel(olderMonth)}`}>‹</a>
           ) : (
-            <span class="cal-cell is-empty" data-day={d.date} title="这天没有更新">{d.day}</span>
-          )
-        )}
-      </div>
-    </nav>
+            <span class="cal-nav is-off" aria-hidden="true">‹</span>
+          )}
+          <span class="cal-title">{cy} 年 {cm} 月</span>
+          {newerMonth ? (
+            <a class="cal-nav" href={`/resources/zhihu-daily-picks/${newerMonth}/`} aria-label={`下一个月 ${monthLabel(newerMonth)}`}>›</a>
+          ) : (
+            <span class="cal-nav is-off" aria-hidden="true">›</span>
+          )}
+        </div>
+        <div class="cal-week">
+          {wdCN.map((w) => <span>{w}</span>)}
+        </div>
+        <div class="cal-grid">
+          {Array.from({ length: firstWeekday }, () => <span class="cal-cell is-blank" aria-hidden="true" />)}
+          {calendarDays.map((d) =>
+            d.has ? (
+              <button type="button" class="cal-cell is-on" data-jump={d.date} data-day={d.date} aria-label={`跳到 ${d.date}`}>{d.day}</button>
+            ) : (
+              <span class="cal-cell is-empty" data-day={d.date} title="这天没有更新">{d.day}</span>
+            )
+          )}
+        </div>
+      </nav>
+    </details>
   )}
 
   <div class="prose zh-body">
     <Content />
   </div>
-
-  <section class="archive">
-    <details>
-      <summary>
-        <span class="arc-title">已归档 · 往期推荐</span>
-        {others.length > 0 && <span class="arc-count">{others.length}</span>}
-      </summary>
-      <ul class="arc-list">
-        {!isLatest && <li><a href="/resources/zhihu-daily-picks/">最新一期</a></li>}
-        {others.length > 0 ? (
-          others.map((m) => (
-            <li><a href={`/resources/zhihu-daily-picks/${m.month}/`}>{monthLabel(m.month)}</a></li>
-          ))
-        ) : (
-          <li class="arc-empty">还没有往期，下个月再来看看～</li>
-        )}
-      </ul>
-    </details>
-  </section>
 </article>
 
 <script>
@@ -112,6 +99,8 @@ const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
       const id = el.getAttribute('data-jump');
       const target = id ? document.getElementById(id) : null;
       if (!target) return;
+      // 先收起日历再滚，避免收起带来的高度变化把落点带偏
+      el.closest('details')?.removeAttribute('open');
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
@@ -143,31 +132,59 @@ const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
   .zh-head .sub { margin: 0; color: var(--ink-soft); font-size: 0.92rem; }
   .zh-head .sub strong { color: var(--accent); }
 
-  /* 月历：切月份 + 点日期跳转 */
-  .cal {
-    margin: 0 0 16px;
-    padding: 12px 0 14px;
+  /* 日期导航：默认折叠，展开才是月历 */
+  .cal-wrap {
+    margin: 0 0 20px;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
   }
+  .cal-summary {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 12px 2px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    font-family: var(--font-serif);
+  }
+  .cal-summary::-webkit-details-marker { display: none; }
+  .cal-summary-label {
+    font-size: 0.9rem;
+    color: var(--ink);
+    transition: color 0.15s ease;
+  }
+  .cal-summary-hint { font-size: 0.8rem; color: var(--ink-soft); }
+  .cal-caret {
+    margin-left: auto;
+    font-size: 0.72rem;
+    color: var(--accent);
+    transition: transform 0.2s ease;
+  }
+  .cal-wrap[open] .cal-caret { transform: rotate(180deg); }
+  .cal-summary:hover .cal-summary-label { color: var(--accent); }
+
+  /* 月历本体：行宽跟随内容栏，格子固定最大尺寸并按列居中，宽屏也不会被拉变形 */
+  .cal { padding: 2px 0 18px; }
   .cal-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 320px;
-    margin: 0 0 8px;
+    gap: 8px;
+    margin: 0 0 10px;
   }
   .cal-title {
     font-family: var(--font-serif);
-    font-size: 0.95rem;
+    font-size: clamp(0.95rem, 0.55vw + 0.78rem, 1.12rem);
     color: var(--ink);
+    letter-spacing: 0.02em;
   }
   .cal-nav {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     border: 1px solid transparent;
     font-size: 1.1rem;
@@ -180,28 +197,31 @@ const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
   .cal-week,
   .cal-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    max-width: 320px;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    justify-items: center;
+    gap: 2px 4px;
   }
   .cal-week span {
+    width: 100%;
     text-align: center;
-    padding-bottom: 4px;
+    padding-bottom: 6px;
     font-family: var(--font-serif);
-    font-size: 0.72rem;
+    font-size: 0.74rem;
     color: var(--ink-soft);
   }
   .cal-cell {
     display: flex;
     align-items: center;
     justify-content: center;
-    aspect-ratio: 1 / 1;
-    margin: 1px;
+    width: 100%;
+    max-width: 46px;
+    height: 36px;
     padding: 0;
     border: 1px solid transparent;
-    border-radius: 50%;
+    border-radius: 9px;
     background: none;
     font-family: var(--font-serif);
-    font-size: 0.82rem;
+    font-size: 0.85rem;
     line-height: 1;
     color: var(--ink-soft);
     -webkit-appearance: none;
@@ -212,63 +232,16 @@ const calendarDays = Array.from({ length: daysInMonth }, (_, i) => {
     color: var(--ink);
     transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
   }
-  button.cal-cell:hover { color: var(--accent); border-color: var(--accent); }
+  button.cal-cell:hover { color: var(--accent); border-color: var(--accent); background: var(--surface); }
   .cal-cell.is-empty { opacity: 0.3; }        /* 这天没有更新，日期变浅 */
   .cal-cell.is-blank { visibility: hidden; }  /* 月初前的占位 */
   .cal-cell.is-today { border-color: var(--accent); color: var(--accent); }
 
-  /* 已归档按钮（details/summary） */
-  .archive { margin: 40px 0 8px; border-top: 1px solid var(--border); padding-top: 24px; }
-  .archive details { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); overflow: hidden; }
-  .archive summary {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    list-style: none;
-    padding: 14px 18px;
-    font-family: var(--font-serif);
-    font-size: 1rem;
-    color: var(--ink);
-    user-select: none;
+  /* 桌面 / 平板：格子放大一档，整行铺满内容栏，看着不空也不挤 */
+  @media (min-width: 640px) {
+    .cal-cell { max-width: 62px; height: 44px; font-size: 0.95rem; }
+    .cal-week span { font-size: 0.8rem; padding-bottom: 8px; }
+    .cal-week, .cal-grid { gap: 4px 6px; }
   }
-  .archive summary::-webkit-details-marker { display: none; }
-  .archive summary::before {
-    content: "▸";
-    color: var(--accent);
-    font-size: 0.8rem;
-    transition: transform 0.2s ease;
-  }
-  .archive details[open] summary::before { transform: rotate(90deg); }
-  .archive summary:hover { color: var(--accent); }
-  .arc-count {
-    margin-left: auto;
-    font-size: 0.78rem;
-    color: var(--ink-soft);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 1px 9px;
-  }
-  .arc-list {
-    list-style: none;
-    margin: 0;
-    padding: 4px 18px 16px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .arc-list li { margin: 0; }
-  .arc-list a {
-    display: inline-block;
-    padding: 5px 14px;
-    font-family: var(--font-serif);
-    font-size: 0.9rem;
-    color: var(--ink-soft);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: var(--bg);
-    transition: color 0.15s ease, border-color 0.15s ease;
-  }
-  .arc-list a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
-  .arc-empty { color: var(--ink-soft); font-size: 0.88rem; padding: 4px 0; }
+
 </style>
